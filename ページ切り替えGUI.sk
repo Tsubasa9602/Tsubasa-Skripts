@@ -1,0 +1,60 @@
+#ページ機能を実装したGUI作り
+
+
+#/guiコマンドでGUIを表示
+command /gui:
+	trigger:
+		#変数「{page1}」にチェストを設定する
+		set {page1} to chest with 3 row named "GUI &cページ1"
+		
+		#{page1}にアイテムを設置
+		set slot 0 of {page1} to apple
+		set slot 1 of {page1} to wooden sword
+		
+		#ページ切り替えのための矢印設置
+		set slot 26 of {page1} to arrow named "&a次のページへ→"
+		
+		#作成したページを表示
+		open {page1} to player
+
+#GUIをクリックしてもアイテムを取れないようにする
+on inventory click:
+	if name of player's current inventory is "GUI &cページ1":
+		cancel event
+		
+		#もし矢がクリックされたら
+		if clicked slot is 26:
+			#{page2}を作成する
+			set {page2} to chest with 3 row named "GUI &bページ2"
+			
+			set slot 0 of {page2} to diamond
+			set slot 1 of {page2} to golden hoe
+			
+			#前のページに戻るための矢を設置する
+			set slot 18 of {page2} to arrow named "&a←前のページに戻る"
+			
+			#現在のページを切り替える
+			close player's inventory
+			open {page2} to player
+			
+	#page2のアイテムを取れなくする
+	if name of player's current inventory is "GUI &bページ2":
+		cancel event
+		
+		#矢をクリックした場合
+		if clicked slot is 18:
+			#{page1}を開く
+			
+			#変数「{page1}」にチェストを設定する
+			set {page1} to chest with 3 row named "GUI &cページ1"
+
+			#{page1}にアイテムを設置
+			set slot 0 of {page1} to apple
+			set slot 1 of {page1} to wooden sword
+
+			#ページ切り替えのための矢印設置
+			set slot 26 of {page1} to arrow named "&a次のページへ→"
+
+			#作成したページを表示
+			close player's inventory
+			open {page1} to player
