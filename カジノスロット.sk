@@ -1,0 +1,38 @@
+#スロットを作る構文
+on sign change:
+	if line 1 of event-block is "[slot]":
+		set line 1 of event-block to "&c[&bCustomSlot&c]"
+		set line 4 of event-block to "&a&l&nクリックでプレイ！"
+
+on right click:
+	if line 4 of event-block is "&a&l&nクリックでプレイ！":
+		add 1 and 2 and 3 and 4 and 5 and 6 and 7 to {numbers::*}
+		set line 4 of event-block to "&cプレイ中…"
+		
+		loop 20 times:
+			set {_r1} to random element of {numbers::*}
+			set {_r2} to random element of {numbers::*}
+			set {_r3} to random element of {numbers::*}
+			set line 2 of event-block to "%{_r1}% %{_r2}% %{_r3}%"
+			play sound "block.lever.click" at player
+			wait 2 ticks
+		
+		#もし当たりだったら
+		if {_r1} is {_r2}:
+			if {_r2} is {_r3}:
+				send "&aおめでとう！あたりです！"
+				play sound "entity.player.levelup" at player
+				give diamond to player
+				#↑ここの構文を変えれば当たった時の処理を変えることができる
+			
+			#もし外れだった場合(パターン1)
+			else:
+				send "&c残念！また挑戦してください！"
+				play sound "block.note_block.bass" at player
+		#もし外れだったら(パターン2)
+		else:
+			send "&c残念！また挑戦してください！"
+			play sound "block.note_block.bass" at player
+		
+		
+		set line 4 of event-block to "&a&l&nクリックでプレイ！"
